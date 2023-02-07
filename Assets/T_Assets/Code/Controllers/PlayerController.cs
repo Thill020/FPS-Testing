@@ -5,11 +5,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private CharacterController controller;
+    private Rigidbody rb;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
     private float rotX;
 
-    [SerializeField] private float playerSpeed = 1500.0f;
+    [SerializeField] private float playerSpeed = 3000.0f;
     [SerializeField] private float jumpHeight = 2.0f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float turnSpeed = 4.0f;
@@ -20,6 +21,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = gameObject.AddComponent<CharacterController>();
+        rb = gameObject.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -43,19 +45,21 @@ public class PlayerController : MonoBehaviour
     {
         groundedPlayer = controller.isGrounded;
 
-        if (groundedPlayer && playerVelocity.y < 0)
+        /*if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
-        }
+        }*/
 
         //Changes the height position of the player..
-        if (Input.GetButtonDown("Jump") /*&& groundedPlayer*/)
+        if (Input.GetKeyDown(KeyCode.Space)/* && groundedPlayer*/)
         {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            Debug.Log("Player Jumpped");
+/*            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+*/            rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
         }
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-
+/*        playerVelocity.y += gravityValue * Time.deltaTime;
+*/
         Vector3 forward = transform.forward;
         controller.SimpleMove(forward * playerSpeed * Input.GetAxis("Vertical") * Time.deltaTime);
         controller.SimpleMove(transform.right * playerSpeed * Input.GetAxis("Horizontal") * Time.deltaTime);
