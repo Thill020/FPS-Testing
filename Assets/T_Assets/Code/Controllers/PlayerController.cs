@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController controller;
     private Rigidbody rb;
-    private Vector3 playerVelocity;
     private bool groundedPlayer;
     private float rotX;
 
     [SerializeField] private float playerSpeed = 3000.0f;
     [SerializeField] private float jumpHeight = 2.0f;
-    [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float turnSpeed = 4.0f;
     [SerializeField] private float minTurnAngle = -90.0f;
     [SerializeField] private float maxTurnAngle = 90.0f;
@@ -20,8 +18,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        controller = gameObject.AddComponent<CharacterController>();
-        rb = gameObject.GetComponent<Rigidbody>();
+/*        controller = gameObject.AddComponent<CharacterController>();
+*/        rb = gameObject.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -43,26 +41,28 @@ public class PlayerController : MonoBehaviour
 
     void Movement()
     {
-        groundedPlayer = controller.isGrounded;
+        rb.AddForce(transform.forward * playerSpeed * Input.GetAxis("Vertical") * Time.deltaTime);
+        rb.AddForce(transform.right * playerSpeed * Input.GetAxis("Vertical") * Time.deltaTime);
 
-        /*if (groundedPlayer && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }*/
+        if (!groundedPlayer)
+            return;
 
         //Changes the height position of the player..
-        if (Input.GetKeyDown(KeyCode.Space)/* && groundedPlayer*/)
+        if (Input.GetAxis("Jump") > 0)
         {
             Debug.Log("Player Jumpped");
-/*            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-*/            rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+            rb.AddForce(0f, jumpHeight, 0f, ForceMode.Impulse);
         }
+    }
 
-/*        playerVelocity.y += gravityValue * Time.deltaTime;
-*/
-        Vector3 forward = transform.forward;
-        controller.SimpleMove(forward * playerSpeed * Input.GetAxis("Vertical") * Time.deltaTime);
-        controller.SimpleMove(transform.right * playerSpeed * Input.GetAxis("Horizontal") * Time.deltaTime);
-        
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (groundedPlayer)
+            return;
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            groundedPlayer = true;
+        }
     }
 }
