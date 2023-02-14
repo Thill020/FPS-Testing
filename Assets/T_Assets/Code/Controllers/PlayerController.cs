@@ -5,15 +5,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Player Movement")]
     private Rigidbody rb;
     private bool groundedPlayer;
-    private float rotX;
+
+    [Header("Player Movement")]
     [SerializeField] private float playerSpeed = 3000.0f;
     [SerializeField] private float jumpHeight = 2.0f;
     [SerializeField] private float turnSpeed = 4.0f;
     private float minTurnAngle = -90.0f;
     private float maxTurnAngle = 90.0f;
+    private float rotX;
 
     [Header("Weapon Settings")]
     [SerializeField] private GameObject bulletPrefab;
@@ -46,8 +47,6 @@ public class PlayerController : MonoBehaviour
 
     void Movement()
     {
-        rb.AddForce(transform.forward * playerSpeed * Input.GetAxis("Vertical") * Time.deltaTime, ForceMode.Acceleration);
-        rb.AddForce(transform.right   * playerSpeed * Input.GetAxis("Horizontal") * Time.deltaTime, ForceMode.Acceleration);
 
         if (rb.velocity.magnitude > 1)
         {
@@ -71,7 +70,9 @@ public class PlayerController : MonoBehaviour
         if (!Input.GetKeyDown(KeyCode.Mouse0))
             return;
 
-        Instantiate(bulletPrefab, bulletSpawnPoint.transform);
+        GameObject bullet = Instantiate(bulletPrefab);
+        bullet.transform.position = bulletSpawnPoint.transform.position;
+        bullet.transform.rotation = bulletSpawnPoint.transform.rotation;
 
     }
 
