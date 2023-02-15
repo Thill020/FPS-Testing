@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour
 
     void Movement()
     {
+        rb.AddForce(transform.forward * Input.GetAxis("Vertical") * playerSpeed * Time.deltaTime);
+        rb.AddForce(transform.right * Input.GetAxis("Horizontal") * playerSpeed * Time.deltaTime);
 
         if (rb.velocity.magnitude > 1)
         {
@@ -56,7 +58,6 @@ public class PlayerController : MonoBehaviour
         if (!groundedPlayer)
             return;
 
-        //Changes the height position of the player..
         if (Input.GetAxis("Jump") > 0)
         {
             Debug.Log("Player Jumpped");
@@ -70,9 +71,9 @@ public class PlayerController : MonoBehaviour
         if (!Input.GetKeyDown(KeyCode.Mouse0))
             return;
 
-        GameObject bullet = Instantiate(bulletPrefab);
-        bullet.transform.position = bulletSpawnPoint.transform.position;
-        bullet.transform.rotation = bulletSpawnPoint.transform.rotation;
+        GameObject bullet;
+        bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, transform.rotation);
+        bullet.GetComponent<BulletController>().player = gameObject;
 
     }
 

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3601490714433011169}
+  - component: {fileID: 2094632122}
   m_Layer: 0
   m_Name: BulletSpawnPoint
   m_TagString: Untagged
@@ -24,13 +25,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041647118676397156}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.618, y: 0.153, z: 1.142}
+  m_LocalPosition: {x: 0.618, y: 0.153, z: 1.239}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8967185530990589809}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2094632122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041647118676397156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a42dd6939dbdf624aa5f1fa48ee10573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  matchedObject: {fileID: 8967185530990589804}
 --- !u!1 &8967185530487363537
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,7 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f505172778b69499954e745c912502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 3000
+  playerSpeed: 30000
   jumpHeight: 200
   turnSpeed: 4
   bulletPrefab: {fileID: 7164619494564877964, guid: d5617b4dd9f36f44d8bc017badff2b6a, type: 3}
