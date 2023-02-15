@@ -73,8 +73,7 @@ public class PlayerController : MonoBehaviour
 
         GameObject bullet;
         bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, transform.rotation);
-        bullet.GetComponent<BulletController>().player = gameObject;
-
+        bullet.transform.rotation = Quaternion.LookRotation(bulletSpawnPoint.transform.forward, bulletSpawnPoint.transform.up);
     }
 
     private void OnCollisionEnter(Collision collision)
