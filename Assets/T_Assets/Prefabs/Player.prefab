@@ -25,12 +25,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041647118676397156}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.618, y: 0.153, z: 1.239}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0.6179962, y: -0.19399977, z: 1.2390003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8967185530990589809}
-  m_RootOrder: 2
+  m_Father: {fileID: 8967185530487363540}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2094632122
 MonoBehaviour:
@@ -74,7 +74,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8967185530627327980}
+  - {fileID: 3601490714433011169}
   m_Father: {fileID: 8967185530990589809}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -155,12 +157,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8967185530627327976}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.614619, y: 0.1505, z: 0.65}
-  m_LocalScale: {x: 0.25, y: 0.5, z: 0.125}
+  m_LocalPosition: {x: 0.6146164, y: -0.19899988, z: 0.6499996}
+  m_LocalScale: {x: 0.25, y: 0.5, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8967185530990589809}
-  m_RootOrder: 1
+  m_Father: {fileID: 8967185530487363540}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &8967185530627327979
 MeshFilter:
@@ -246,8 +248,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8967185530487363540}
-  - {fileID: 8967185530627327980}
-  - {fileID: 3601490714433011169}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -345,6 +345,7 @@ MonoBehaviour:
   playerSpeed: 30000
   jumpHeight: 200
   turnSpeed: 4
+  playerCamera: {fileID: 0}
   bulletPrefab: {fileID: 7164619494564877964, guid: d5617b4dd9f36f44d8bc017badff2b6a, type: 3}
   bulletSpawnPoint: {fileID: 2041647118676397156}
   bulletSpeed: 15

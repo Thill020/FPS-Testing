@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -12,9 +11,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float playerSpeed = 3000.0f;
     [SerializeField] private float jumpHeight = 2.0f;
     [SerializeField] private float turnSpeed = 4.0f;
+
+    [Header("Camera Settings")]
+    [SerializeField] private GameObject playerCamera;
     private float minTurnAngle = -90.0f;
     private float maxTurnAngle = 90.0f;
     private float rotX;
+    private float rotY;
 
     [Header("Weapon Settings")]
     [SerializeField] private GameObject bulletPrefab;
@@ -30,7 +33,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MouseAiming();
+        MouseAiming2();
         Movement();
         SummonBullet();
     }
@@ -43,6 +46,18 @@ public class PlayerController : MonoBehaviour
         rotX = Mathf.Clamp(rotX, minTurnAngle, maxTurnAngle);
 
         transform.eulerAngles = new Vector3(-rotX, transform.eulerAngles.y + y, 0);
+    }
+    void MouseAiming2()
+    {
+        rotY = Input.GetAxis("Mouse X") * turnSpeed;
+        rotX = Input.GetAxis("Mouse Y") * turnSpeed;
+
+        rotX = Mathf.Clamp(rotX, minTurnAngle, maxTurnAngle);
+
+        transform.Rotate(0, rotY, 0);
+
+        playerCamera.transform.eulerAngles = new Vector3(playerCamera.transform.eulerAngles.x - rotX, transform.eulerAngles.y, 0);
+
     }
 
     void Movement()
