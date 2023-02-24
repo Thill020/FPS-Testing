@@ -25,4 +25,15 @@ public class BulletController : MonoBehaviour
         if (secondTillDestroy < 0)
             Destroy(gameObject);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            //Damage Player
+            Destroy(gameObject);
+        }
+
+        Destroy(gameObject);
+    }
 }
