@@ -4,31 +4,38 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController controller;
     private Rigidbody rb;
-    private Vector3 playerVelocity;
     private bool groundedPlayer;
-    private float rotX;
 
+    [Header("Player Movement")]
     [SerializeField] private float playerSpeed = 3000.0f;
     [SerializeField] private float jumpHeight = 2.0f;
-    [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float turnSpeed = 4.0f;
-    [SerializeField] private float minTurnAngle = -90.0f;
-    [SerializeField] private float maxTurnAngle = 90.0f;
+
+    [Header("Camera Settings")]
+    [SerializeField] private GameObject playerCamera;
+    private float minTurnAngle = -90.0f;
+    private float maxTurnAngle = 90.0f;
+    private float rotX;
+    private float rotY;
+
+    [Header("Weapon Settings")]
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject bulletSpawnPoint;
+    [SerializeField] private float bulletSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
-        controller = gameObject.AddComponent<CharacterController>();
         rb = gameObject.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        MouseAiming();
+        MouseAiming2();
         Movement();
+        SummonBullet();
     }
 
     void MouseAiming()
@@ -40,29 +47,58 @@ public class PlayerController : MonoBehaviour
 
         transform.eulerAngles = new Vector3(-rotX, transform.eulerAngles.y + y, 0);
     }
+    void MouseAiming2()
+    {
+        rotY = Input.GetAxis("Mouse X") * turnSpeed;
+        rotX = Input.GetAxis("Mouse Y") * turnSpeed;
+
+        rotX = Mathf.Clamp(rotX, minTurnAngle, maxTurnAngle);
+
+        transform.Rotate(0, rotY, 0);
+
+        playerCamera.transform.eulerAngles = new Vector3(playerCamera.transform.eulerAngles.x - rotX, transform.eulerAngles.y, 0);
+
+    }
 
     void Movement()
     {
-        groundedPlayer = controller.isGrounded;
+        rb.AddForce(transform.forward * Input.GetAxis("Vertical") * playerSpeed * Time.deltaTime);
+        rb.AddForce(transform.right * Input.GetAxis("Horizontal") * playerSpeed * Time.deltaTime);
 
-        /*if (groundedPlayer && playerVelocity.y < 0)
+        if (rb.velocity.magnitude > 1)
         {
-            playerVelocity.y = 0f;
-        }*/
-
-        //Changes the height position of the player..
-        if (Input.GetKeyDown(KeyCode.Space)/* && groundedPlayer*/)
-        {
-            Debug.Log("Player Jumpped");
-/*            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-*/            rb.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+            rb.velocity.Normalize();
         }
 
-/*        playerVelocity.y += gravityValue * Time.deltaTime;
-*/
-        Vector3 forward = transform.forward;
-        controller.SimpleMove(forward * playerSpeed * Input.GetAxis("Vertical") * Time.deltaTime);
-        controller.SimpleMove(transform.right * playerSpeed * Input.GetAxis("Horizontal") * Time.deltaTime);
-        
+        if (!groundedPlayer)
+            return;
+
+        if (Input.GetAxis("Jump") > 0)
+        {
+            Debug.Log("Player Jumpped");
+            rb.AddForce(0f, jumpHeight, 0f, ForceMode.Impulse);
+            groundedPlayer = false;
+        }
+    }
+
+    void SummonBullet()
+    {
+        if (!Input.GetKeyDown(KeyCode.Mouse0))
+            return;
+
+        GameObject bullet;
+        bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, transform.rotation);
+        bullet.transform.rotation = Quaternion.LookRotation(bulletSpawnPoint.transform.forward, bulletSpawnPoint.transform.up);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (groundedPlayer)
+            return;
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            groundedPlayer = true;
+        }
     }
 }
